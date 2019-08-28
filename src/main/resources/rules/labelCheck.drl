@@ -1,0 +1,37 @@
+package rules;
+
+
+import  com.example.droolstest.model.Label;
+
+//全局变量
+import function com.example.droolstest.config.Utility.hh;
+
+//函数
+function String hello(String name) {
+    return "Hello "+name+"!";
+}
+
+global java.util.List myGlobalList;
+dialect  "java"
+rule "labelCheck"
+    when  $label:Label(sex =="man")
+    then
+          myGlobalList.remove($label);
+          System.out.println("识别成功");
+          System.out.println("labelCheck--myGlobalList的size()："+myGlobalList.size());
+end
+
+
+rule "age"
+     when $label:Label(age==5||(age<10&&age>5))
+     then
+          $label.setAge(10);
+          $label.setSex("man");
+          System.out.println(hello($label.getSex()));
+          update($label);
+          System.out.println("修改age后为："+$label.getAge());
+          System.out.println("age--myGlobalList的size()："+myGlobalList.size());
+end
+
+
+
